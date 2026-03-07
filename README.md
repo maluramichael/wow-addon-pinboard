@@ -12,6 +12,7 @@ Save, organize, and manage your favorite map waypoints with a clean, modern UI.
 - **Distance Display** — shows yards to waypoints in your current zone
 - **LDB Minimap Button** — quick access with nearby waypoints in the tooltip
 - **Context Menu** — right-click to edit, move, or remove waypoints
+- **TomTom Integration** — optionally set a TomTom waypoint arrow alongside the native pin (requires TomTom)
 - **Dark Polished UI** — clean dark theme with gold accents and hover highlights
 
 ## Usage

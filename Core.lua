@@ -18,6 +18,7 @@ local defaults = {
         collapsed = {},
         sortMode = "category",
         autoTrack = true,
+        useTomTom = true,
         confirmDelete = true,
         nextID = 1,
     },
@@ -251,11 +252,20 @@ end
 -- Blizzard Waypoint Integration
 -------------------------------------------------------------------------------
 PinBoard.activeWaypointID = nil
+PinBoard.tomtomUID = nil
+
+function PinBoard:IsTomTomAvailable()
+    return self.db.profile.useTomTom and _G.TomTom and _G.TomTom.AddWaypoint
+end
 
 function PinBoard:SetWaypoint(id)
     local wp = self:GetWaypoint(id)
     if not wp then return false end
 
+    -- Clear previous TomTom waypoint
+    self:ClearTomTomWaypoint()
+
+    -- Blizzard native pin
     local point = UiMapPoint.CreateFromCoordinates(wp.mapID, wp.x, wp.y)
     C_Map.SetUserWaypoint(point)
 
@@ -263,15 +273,34 @@ function PinBoard:SetWaypoint(id)
         C_SuperTrack.SetSuperTrackedUserWaypoint(true)
     end
 
+    -- TomTom integration
+    if self:IsTomTomAvailable() then
+        local title = wp.title ~= "" and wp.title or
+            format("%s (%.1f, %.1f)", wp.zoneName, wp.x * 100, wp.y * 100)
+        self.tomtomUID = _G.TomTom:AddWaypoint(wp.mapID, wp.x, wp.y, {
+            title = title,
+            persistent = false,
+            from = "PinBoard",
+        })
+    end
+
     self.activeWaypointID = id
     self:SendMessage("PINBOARD_ACTIVE_CHANGED")
     return true
+end
+
+function PinBoard:ClearTomTomWaypoint()
+    if self.tomtomUID and _G.TomTom and _G.TomTom.RemoveWaypoint then
+        pcall(_G.TomTom.RemoveWaypoint, _G.TomTom, self.tomtomUID)
+        self.tomtomUID = nil
+    end
 end
 
 function PinBoard:ClearWaypoint()
     if C_Map.HasUserWaypoint() then
         C_Map.ClearUserWaypoint()
     end
+    self:ClearTomTomWaypoint()
     self.activeWaypointID = nil
     self:SendMessage("PINBOARD_ACTIVE_CHANGED")
 end

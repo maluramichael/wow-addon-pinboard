@@ -8,7 +8,7 @@
 ## Category-enUS: Map & Minimap
 ## Category-deDE: Karte & Minikarte
 ## SavedVariables: PinBoardDB
-## OptionalDeps: Ace3, LibDataBroker-1.1, LibDBIcon-1.0
+## OptionalDeps: Ace3, LibDataBroker-1.1, LibDBIcon-1.0, TomTom
 
 embeds.xml
 
