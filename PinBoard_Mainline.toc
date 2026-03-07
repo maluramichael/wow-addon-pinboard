@@ -2,7 +2,7 @@
 ## Title: |cFF00D1FFMM|r PinBoard
 ## Notes: Save and manage favorite map waypoints with a clean, modern UI
 ## Author: Michael Malura
-## Version: 1.0.0
+## Version: 1.0.1
 ## X-Curse-Project-ID: 1479935
 ## IconTexture: Interface\Icons\INV_Misc_Map02
 ## Category-enUS: Map & Minimap
