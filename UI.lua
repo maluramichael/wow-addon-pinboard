@@ -559,61 +559,66 @@ function PinBoard:ShowContextMenu(anchor, wp)
     local function InitMenu(_, level)
         if not level then return end
 
-        local info = UIDropDownMenu_CreateInfo()
+        if level == 1 then
+            local info = UIDropDownMenu_CreateInfo()
 
-        -- Set Waypoint
-        info.text = "Set Waypoint"
-        info.notCheckable = true
-        info.func = function()
-            PinBoard:SetWaypoint(wp.id)
-            PinBoard:RefreshList()
+            -- Set Waypoint
+            info.text = "Set Waypoint"
+            info.notCheckable = true
+            info.func = function()
+                PinBoard:SetWaypoint(wp.id)
+                PinBoard:RefreshList()
+            end
+            UIDropDownMenu_AddButton(info, level)
+
+            -- Edit
+            info = UIDropDownMenu_CreateInfo()
+            info.text = "Edit"
+            info.notCheckable = true
+            info.func = function()
+                PinBoard:ShowEditDialog(wp.id)
+            end
+            UIDropDownMenu_AddButton(info, level)
+
+            -- Move to Category submenu
+            info = UIDropDownMenu_CreateInfo()
+            info.text = "Move to"
+            info.notCheckable = true
+            info.hasArrow = true
+            info.value = "MOVE_TO"
+            UIDropDownMenu_AddButton(info, level)
+
+            -- Delete
+            info = UIDropDownMenu_CreateInfo()
+            info.text = "|cFFFF4444Remove|r"
+            info.notCheckable = true
+            info.func = function()
+                PinBoard:RemoveWaypoint(wp.id)
+            end
+            UIDropDownMenu_AddButton(info, level)
         end
-        UIDropDownMenu_AddButton(info, level)
-
-        -- Edit
-        info.text = "Edit"
-        info.func = function()
-            PinBoard:ShowEditDialog(wp.id)
-        end
-        UIDropDownMenu_AddButton(info, level)
-
-        -- Move to Category submenu
-        info.text = "Move to"
-        info.hasArrow = true
-        info.value = "MOVE_TO"
-        info.func = nil
-        UIDropDownMenu_AddButton(info, level)
-
-        -- Delete
-        info.text = "|cFFFF4444Remove|r"
-        info.hasArrow = false
-        info.value = nil
-        info.func = function()
-            PinBoard:RemoveWaypoint(wp.id)
-        end
-        UIDropDownMenu_AddButton(info, level)
 
         if level == 2 and UIDROPDOWNMENU_MENU_VALUE == "MOVE_TO" then
             for _, cat in ipairs(PinBoard:GetCategories()) do
-                info = UIDropDownMenu_CreateInfo()
-                info.text = cat
-                info.checked = (wp.category == cat)
-                info.func = function()
+                local catInfo = UIDropDownMenu_CreateInfo()
+                catInfo.text = cat
+                catInfo.checked = (wp.category == cat)
+                catInfo.func = function()
                     PinBoard:UpdateWaypoint(wp.id, { category = cat })
                     CloseDropDownMenus()
                 end
-                UIDropDownMenu_AddButton(info, level)
+                UIDropDownMenu_AddButton(catInfo, level)
             end
 
             -- New category option
-            info = UIDropDownMenu_CreateInfo()
-            info.text = "|cFF00FF00+ New Category|r"
-            info.notCheckable = true
-            info.func = function()
+            local newInfo = UIDropDownMenu_CreateInfo()
+            newInfo.text = "|cFF00FF00+ New Category|r"
+            newInfo.notCheckable = true
+            newInfo.func = function()
                 CloseDropDownMenus()
                 PinBoard:ShowNewCategoryDialog(wp.id)
             end
-            UIDropDownMenu_AddButton(info, level)
+            UIDropDownMenu_AddButton(newInfo, level)
         end
     end
 
