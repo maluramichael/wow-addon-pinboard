@@ -1,0 +1,12 @@
+# Libraries (fetched by CurseForge packager)
+libs/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
