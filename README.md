@@ -1,5 +1,10 @@
 # PinBoard
 
+<!-- links:start -->
+[![Support me on Ko-fi](https://malura.de/assets/badge/kofi.svg)](https://malura.de/go/kofi?ref=wow-addon-pinboard)
+[![Check out my page](https://malura.de/assets/badge/malura.svg)](https://malura.de/go/site?ref=wow-addon-pinboard)
+<!-- links:end -->
+
 Save, organize, and manage your favorite map waypoints with a clean, modern UI.
 
 ## Features
